@@ -8,19 +8,24 @@ router.post("/patinadores", async (req, res) => {
   try {
     const patinadores = req.body;
 
-    const results = await Promise.all(patinadores.map(async (user) => {
-      const existingUser = await patinadorSchema.findOne({ number_ID: user.number_ID });
-      if (existingUser) {
-
-        existingUser.estado = 'Afiliado';
-        await existingUser.save();
-        return existingUser;
-      } else {
-
-        const newUser = new patinadorSchema({ ...user, estado: 'Nuevo' });
-        return await newUser.save();
-      }
-    }));
+    const results = await Promise.all(
+      patinadores.map(async (patinador) => {
+        const existingPatinador = await patinadorSchema.findOne({
+          number_ID: patinador.number_ID,
+        });
+        if (existingPatinador) {
+          existingPatinador.estado = "Afiliado";
+          await existingPatinador.save();
+          return existingPatinador;
+        } else {
+          const newPatinador = new patinadorSchema({
+            ...patinador,
+            estado: "Nuevo",
+          });
+          return await newPatinador.save();
+        }
+      })
+    );
 
     res.json(results);
   } catch (error) {
@@ -46,7 +51,7 @@ router.get("/patinadores/:number_ID", (req, res) => {
 });
 
 // eliminar patinador
-router.delete('/patinadores/:number_ID', (req, res) => {
+router.delete("/patinadores/:number_ID", (req, res) => {
   const { number_ID } = req.params;
   patinadorSchema
     .deleteOne({ number_ID: parseInt(number_ID) })
@@ -57,24 +62,41 @@ router.delete('/patinadores/:number_ID', (req, res) => {
 // actualizar patinador
 router.put("/patinadores/:number_ID", (req, res) => {
   const { number_ID } = req.params;
-  const { first_name, second_name, first_surname, second_surname, birth_date, branch } = req.body;
+  const {
+    first_name,
+    second_name,
+    first_surname,
+    second_surname,
+    birth_date,
+    branch,
+  } = req.body;
 
   patinadorSchema
     .updateOne(
-      { number_ID: parseInt(number_ID) },  // Buscar por number_ID en lugar de _id
-      { $set: { first_name, second_name, first_surname, second_surname, birth_date, branch } },  // Excluir "estado"
-      { new: true }  // Esto asegura que obtienes el documento actualizado si es necesario
+      { number_ID: parseInt(number_ID) }, // Buscar por number_ID en lugar de _id
+      {
+        $set: {
+          first_name,
+          second_name,
+          first_surname,
+          second_surname,
+          birth_date,
+          branch,
+        },
+      }, // Excluir "estado"
+      { new: true } // Esto asegura que obtienes el documento actualizado si es necesario
     )
     .then((data) => {
       if (data.nModified > 0) {
-        res.json({ message: 'patinador actualizado exitosamente' });
+        res.json({ message: "patinador actualizado exitosamente" });
       } else {
-        console.log(data)
-        res.status(404).json({ message: `patinador no encontrado o sin cambios ${data}` });
+        console.log(data);
+        res
+          .status(404)
+          .json({ message: `patinador no encontrado o sin cambios ${data}` });
       }
     })
     .catch((error) => res.status(500).json({ message: error.message }));
 });
-
 
 module.exports = router;
