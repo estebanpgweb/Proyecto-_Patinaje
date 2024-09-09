@@ -1,23 +1,23 @@
 const express = require("express");
-const userSchema = require("../models/user");
+const patinadorSchema = require("../models/patinador");
 
 const router = express.Router();
 
 // Crear múltiples patinadores
-router.post("/users", async (req, res) => {
+router.post("/patinadores", async (req, res) => {
   try {
-    const users = req.body;
+    const patinadores = req.body;
 
-    const results = await Promise.all(users.map(async (user) => {
-      const existingUser = await userSchema.findOne({ number_ID: user.number_ID });
+    const results = await Promise.all(patinadores.map(async (user) => {
+      const existingUser = await patinadorSchema.findOne({ number_ID: user.number_ID });
       if (existingUser) {
-        
+
         existingUser.estado = 'Afiliado';
         await existingUser.save();
         return existingUser;
       } else {
-        
-        const newUser = new userSchema({ ...user, estado: 'Nuevo' });
+
+        const newUser = new patinadorSchema({ ...user, estado: 'Nuevo' });
         return await newUser.save();
       }
     }));
@@ -27,39 +27,39 @@ router.post("/users", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-  
+
 // obtener todos los patinadores
-router.get("/users", (req, res) => {
-  userSchema
+router.get("/patinadores", (req, res) => {
+  patinadorSchema
     .find()
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // obtener patinador por ID
-router.get("/users/:number_ID", (req, res) => {
+router.get("/patinadores/:number_ID", (req, res) => {
   const { number_ID } = req.params;
-  userSchema
+  patinadorSchema
     .findOne({ number_ID: parseInt(number_ID) })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // eliminar patinador
-router.delete('/users/:number_ID', (req, res) => {
+router.delete('/patinadores/:number_ID', (req, res) => {
   const { number_ID } = req.params;
-  userSchema
+  patinadorSchema
     .deleteOne({ number_ID: parseInt(number_ID) })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // actualizar patinador
-router.put("/users/:number_ID", (req, res) => {
+router.put("/patinadores/:number_ID", (req, res) => {
   const { number_ID } = req.params;
   const { first_name, second_name, first_surname, second_surname, birth_date, branch } = req.body;
 
-  userSchema
+  patinadorSchema
     .updateOne(
       { number_ID: parseInt(number_ID) },  // Buscar por number_ID en lugar de _id
       { $set: { first_name, second_name, first_surname, second_surname, birth_date, branch } },  // Excluir "estado"
@@ -67,9 +67,10 @@ router.put("/users/:number_ID", (req, res) => {
     )
     .then((data) => {
       if (data.nModified > 0) {
-        res.json({ message: 'Usuario actualizado exitosamente' });
+        res.json({ message: 'patinador actualizado exitosamente' });
       } else {
-        res.status(404).json({ message: 'Usuario no encontrado o sin cambios' });
+        console.log(data)
+        res.status(404).json({ message: `patinador no encontrado o sin cambios ${data}` });
       }
     })
     .catch((error) => res.status(500).json({ message: error.message }));

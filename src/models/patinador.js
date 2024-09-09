@@ -1,6 +1,6 @@
 
 const mongoose = require("mongoose");
-const userSchema = mongoose.Schema({
+const patinadorSchema = mongoose.Schema({
 
   numero_competencia: {
     type: Number,
@@ -55,4 +55,4 @@ const userSchema = mongoose.Schema({
 
 
 
-module.exports = mongoose.model('Patinadores', userSchema);
+module.exports = mongoose.model('Patinadores', patinadorSchema);
