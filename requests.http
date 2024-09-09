@@ -1,0 +1,55 @@
+###
+POST http://localhost:9000/api/users HTTP/1.1
+Content-Type: application/json
+
+[
+  {
+    "number_ID": "1005486553",
+    "first_name": "Esteban",
+    "second_name": "David",
+    "first_surname": "Florez",
+    "second_surname": "Gómez",
+    "birth_date": "15/08/1999",
+    "branch": "Masculino"
+  },
+  {
+    "number_ID": "100545366",
+    "first_name": "Ana",
+    "second_name": "María",
+    "first_surname": "López",
+    "second_surname": "Ramírez",
+    "birth_date": "22/03/2001",
+    "branch": "Femenino"
+  },
+  {
+    "number_ID": "10054",
+    "first_name": "Luis",
+    "second_name": "Alberto",
+    "first_surname": "Fernández",
+    "second_surname": "Martínez",
+    "birth_date": "11/05/2014",
+    "branch": "Masculino"
+  }
+]
+
+###
+GET http://localhost:9000/api/users HTTP/1.1
+
+###
+GET http://localhost:9000/api/users/ 100545366 HTTP/1.1
+
+###
+DELETE http://localhost:9000/api/users/ 100545366 HTTP/1.1
+
+###
+PUT http://localhost:9000/api/users/10054 HTTP/1.1
+Content-Type: application/json
+
+{
+    "first_name": "Prueba",
+    "second_name": "Estado",
+    "first_surname": "Actualización",
+    "second_surname": "Martínez",
+    "birth_date": "11/05/2014",
+    "branch": "Masculino"
+}
