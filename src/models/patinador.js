@@ -4,7 +4,7 @@ const patinadorSchema = mongoose.Schema({
 
   numero_competencia: {
     type: Number,
-    requiered: false,
+    required: false,
   },
     number_ID: {
     type: Number,

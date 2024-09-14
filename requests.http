@@ -48,8 +48,66 @@ Content-Type: application/json
 {
     "first_name": "Prueba",
     "second_name": "Estado",
-    "first_surname": "Actualización",
-    "second_surname": "Martínez",
+    "first_surname": "segundo nombre",
+    "second_surname": "dfjvnskvnerfr ",
     "birth_date": "11/05/2014",
     "branch": "Masculino"
+}
+
+###
+POST http://localhost:9000/auth/register HTTP/1.1
+Content-Type: application/json
+
+  {
+  "name": "Esteban rol",
+  "password": "esteban"
+}
+
+###
+POST http://localhost:9000/auth/login HTTP/1.1
+Content-Type: application/json
+
+
+  {
+  "name": "Esteban rol",
+  "password": "esteban"
+}
+
+
+###
+GET http://localhost:9000/resolucion/protected?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTVkODgxNGIzYjQ0OTUzMTZhYzRhMSIsInJvbGUiOiJzZWNyZXRhcmlvIiwiaWF0IjoxNzI2MzQzNDM3LCJleHAiOjE3MjYzNDcwMzd9.UdZPwhcycI2QHy6b9ApX42nqfBvmhyj8BVyX3udVxjc HTTP/1.1
+
+
+###
+POST http://localhost:9000/resolucion/resoluciones/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTVkODgxNGIzYjQ0OTUzMTZhYzRhMSIsInJvbGUiOiJzZWNyZXRhcmlvIiwiaWF0IjoxNzI2MzQzNDM3LCJleHAiOjE3MjYzNDcwMzd9.UdZPwhcycI2QHy6b9ApX42nqfBvmhyj8BVyX3udVxjc HTTP/1.1
+Content-Type: application/json
+
+  {
+  "name_event": "Campeonato Nacional de Patinaje",
+  "date_start": "15/10/2024",
+  "date_end": "20/10/2024",
+  "place_event": "Pista Olímpica, Bogotá",
+  "value_new_patinador": 100,
+  "value_patinador": 75,
+  "categories_date": "01/10/2024"
+}
+
+###
+GET http://localhost:9000/resolucion/resoluciones?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTVkODgxNGIzYjQ0OTUzMTZhYzRhMSIsInJvbGUiOiJzZWNyZXRhcmlvIiwiaWF0IjoxNzI2MzQzNDM3LCJleHAiOjE3MjYzNDcwMzd9.UdZPwhcycI2QHy6b9ApX42nqfBvmhyj8BVyX3udVxjc HTTP/1.1
+
+###
+DELETE  http://localhost:9000/resolucion/resoluciones/Campeonato Nacional de Patinaje?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTVkODgxNGIzYjQ0OTUzMTZhYzRhMSIsInJvbGUiOiJzZWNyZXRhcmlvIiwiaWF0IjoxNzI2MzQzNDM3LCJleHAiOjE3MjYzNDcwMzd9.UdZPwhcycI2QHy6b9ApX42nqfBvmhyj8BVyX3udVxjc HTTP/1.1
+
+###
+PUT  http://localhost:9000/resolucion/resoluciones/Campeonato Nacional de Patinaje?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTVkODgxNGIzYjQ0OTUzMTZhYzRhMSIsInJvbGUiOiJzZWNyZXRhcmlvIiwiaWF0IjoxNzI2MzQzNDM3LCJleHAiOjE3MjYzNDcwMzd9.UdZPwhcycI2QHy6b9ApX42nqfBvmhyj8BVyX3udVxjc HTTP/1.1
+Content-Type: application/json
+
+  {
+  "name_event": "Campeonato de actualizaqcion",
+  "date_start": "15/10/2024",
+  "date_end": "20/10/2010",
+  "place_event": "Pista de actualizacion",
+  "value_new_patinador": 1007856,
+  "value_patinador": 75,
+  "categories_date": "01/10/2024"
 }

@@ -71,8 +71,9 @@ router.put("/patinadores/:number_ID", (req, res) => {
     branch,
   } = req.body;
 
+  // Buscar y actualizar el documento
   patinadorSchema
-    .updateOne(
+    .findOneAndUpdate(
       { number_ID: parseInt(number_ID) }, // Buscar por number_ID en lugar de _id
       {
         $set: {
@@ -83,20 +84,16 @@ router.put("/patinadores/:number_ID", (req, res) => {
           birth_date,
           branch,
         },
-      }, // Excluir "estado"
-      { new: true } // Esto asegura que obtienes el documento actualizado si es necesario
+      },
+      { new: true, runValidators: true } // Obtener el documento actualizado y validar el esquema
     )
     .then((data) => {
-      if (data.nModified > 0) {
-        res.json({ message: "patinador actualizado exitosamente" });
+      if (data) {
+        res.json({ message: "patinador actualizado exitosamente", data });
       } else {
-        console.log(data);
-        res
-          .status(404)
-          .json({ message: `patinador no encontrado o sin cambios ${data}` });
+        res.status(404).json({ message: `Patinador no encontrado` });
       }
     })
     .catch((error) => res.status(500).json({ message: error.message }));
 });
-
 module.exports = router;
