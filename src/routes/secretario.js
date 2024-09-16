@@ -5,6 +5,62 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Registro de secretario
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Secretario:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nombre único del secretario
+ *         password:
+ *           type: string
+ *           description: Contraseña del secretario
+ *       required:
+ *         - name
+ *         - password
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registrar un nuevo secretario
+ *     tags: [Secretarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del secretario
+ *               password:
+ *                 type: string
+ *                 description: Contraseña del secretario
+ *             required:
+ *               - name
+ *               - password
+ *     responses:
+ *       201:
+ *         description: Secretario registrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT para autenticación
+ *       400:
+ *         description: Error al registrar el secretario
+ *       500:
+ *         description: Error en el servidor
+ */
 router.post('/register', async (req, res) => {
   const { name, password } = req.body;
 
@@ -28,6 +84,46 @@ router.post('/register', async (req, res) => {
 });
 
 // Login de secretario
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Inicia sesión como secretario
+ *     tags: [Secretario]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del secretario
+ *               password:
+ *                 type: string
+ *                 description: Contraseña del secretario
+ *             required:
+ *               - name
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Login exitoso y token JWT devuelto.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT generado para el secretario
+ *       401:
+ *         description: Nombre de usuario o contraseña incorrectos.
+ *       500:
+ *         description: Error en el proceso de login.
+ */
+
 router.post('/login', async (req, res) => {
   const { name, password } = req.body;
 
