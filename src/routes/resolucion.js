@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Resolucion = require('../models/resolucion');
-const verifySecretarioRole = require('../verifySecretarioRole');
+const verifySecretarioRole = require('../verificacion/verifySecretarioRole');
 
 /**
  * @swagger

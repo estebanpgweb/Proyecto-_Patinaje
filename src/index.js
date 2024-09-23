@@ -5,6 +5,7 @@ require("dotenv").config();
 const patinadorRoute = require("./routes/patinador");
 const secretarioRoute = require("./routes/secretario");
 const resolucionRoute = require("./routes/resolucion");
+const entrenadorRoute = require("./routes/entrenador");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 9000;
@@ -30,9 +31,10 @@ const swaggerSpec = {
   // middlewares
 app.use(express.json());
 app.use("/patinaje-doc",swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerSpec)));
-app.use("/api", patinadorRoute);
-app.use("/auth", secretarioRoute);
+app.use("/patinador", patinadorRoute);
+app.use("/secretario", secretarioRoute);
 app.use("/resolucion", resolucionRoute);
+app.use("/entrenador", entrenadorRoute);
 
 
 // routes

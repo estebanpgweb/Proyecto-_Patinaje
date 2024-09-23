@@ -1,34 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Secretario = require('../models/secretario');
+const Secretario = require('../models/usuarios.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// Registro de secretario
+// Registro de usuarios
 /**
  * @swagger
  * components:
  *   schemas:
- *     Secretario:
+ *     Usuario:
  *       type: object
  *       properties:
  *         name:
  *           type: string
- *           description: Nombre único del secretario
+ *           description: Nombre único del usuario
  *         password:
  *           type: string
- *           description: Contraseña del secretario
+ *           description: Contraseña del usuario
+ *         email: 
+ *           type: string
+ *           description: Email del usuario
  *       required:
  *         - name
  *         - password
+ *         - email
  */
+
 
 /**
  * @swagger
  * /auth/register:
  *   post:
  *     summary: Registrar un nuevo secretario
- *     tags: [Secretarios]
+ *     tags: [Secretario]
  *     requestBody:
  *       required: true
  *       content:
@@ -42,9 +47,13 @@ const jwt = require('jsonwebtoken');
  *               password:
  *                 type: string
  *                 description: Contraseña del secretario
+ *               email:
+ *                 type: string
+ *                 description: Contraseña del secretario
  *             required:
  *               - name
  *               - password
+ *               - email
  *     responses:
  *       201:
  *         description: Secretario registrado exitosamente
@@ -62,11 +71,11 @@ const jwt = require('jsonwebtoken');
  *         description: Error en el servidor
  */
 router.post('/register', async (req, res) => {
-  const { name, password } = req.body;
+  const { name, password, email } = req.body;
 
   try {
     const lockPassword = await bcrypt.hash(password, 10);
-    const newSecretario = new Secretario({ name, password: lockPassword });
+    const newSecretario = new Secretario({ name, password: lockPassword, email });
     await newSecretario.save();
 
     const token = jwt.sign(
@@ -77,7 +86,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ token });
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(400).json({ message: 'Nombre de usuario ya existe' });
+      return res.status(400).json({ message: 'Usuario ya se encuentra registrado' });
     }
     res.status(500).json({ message: 'Error en el registro', error });
   }
@@ -98,14 +107,14 @@ router.post('/register', async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               email:
  *                 type: string
  *                 description: Nombre del secretario
  *               password:
  *                 type: string
  *                 description: Contraseña del secretario
  *             required:
- *               - name
+ *               - email
  *               - password
  *     responses:
  *       200:
@@ -125,19 +134,19 @@ router.post('/register', async (req, res) => {
  */
 
 router.post('/login', async (req, res) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const secretario = await Secretario.findOne({ name });
+    const secretario = await Secretario.findOne({ email });
 
     if (!secretario) {
-      return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
+      return res.status(401).json({ message: 'Email de usuario no registrado o incorrecto' });
     }
 
     const isMatch = await bcrypt.compare(password, secretario.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
+      return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
     const token = jwt.sign(
